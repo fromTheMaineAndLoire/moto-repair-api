@@ -1,6 +1,5 @@
 package com.falkenberg.moto_repair_api.entities;
 
-import ch.qos.logback.core.net.server.Client;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
