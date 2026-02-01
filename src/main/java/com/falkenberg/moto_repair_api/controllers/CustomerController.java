@@ -33,8 +33,9 @@ public class CustomerController {
 
     @GetMapping(value = "/{id}")
     @Operation(description = "Récupérer les informations d'un client")
-    public ResponseEntity<Customer> getCustomer(@PathVariable Long id){
+    public ResponseEntity<Customer> getCustomer(@PathVariable(name = "id") Long id){
+        logger.info("[ID] = {}",id);
         Customer customer = customerService.getCustomer(id);
-        return ResponseEntity.status(HttpStatus.FOUND).body(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(customer);
     }
 }

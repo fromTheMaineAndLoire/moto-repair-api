@@ -8,12 +8,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/bons")
@@ -31,8 +30,9 @@ public class RepairingOrderController {
     // Get bon de réparation - ajouter pagination et filtre sur status, mécanicien, client et priorité
     @GetMapping(value = "/")
     @Operation(description = "Récupérer les ordres de réparation")
-    public ResponseEntity<List<RepairingOrder>> getRepairingOrderList(){
-        return ResponseEntity.status(HttpStatus.FOUND).body(repairingOrderService.getRepairingOrderList());
+    public ResponseEntity<Page<RepairingOrder>> getRepairingOrderList(@RequestParam(defaultValue = "0")  int page,
+                                                                      @RequestParam(defaultValue = "10") int size){
+        return ResponseEntity.status(HttpStatus.FOUND).body(repairingOrderService.getRepairingOrderList(page,size));
     }
 
     // GET    /bons/{id}

@@ -63,7 +63,7 @@ public class UtilComponent {
                 repairingOrderEntity.getPriority(),
                 repairingOrderEntity.getCreatedAt(),
                 repairingOrderEntity.getUpdatedAt(),
-                customerEntityToDto(repairingOrderEntity.getCustomer()),
+                customerEntityToDto(repairingOrderEntity.getCustomerEntity()),
                 motoCycleEntityToDto(repairingOrderEntity.getMotoEntity()),
                 userToDto(repairingOrderEntity.getUserEntity())
         );
@@ -77,7 +77,7 @@ public class UtilComponent {
         repairingOrderEntity.setPriority(repairingOrder.priority());
         repairingOrderEntity.setCreatedAt(repairingOrder.createdAt());
         repairingOrderEntity.setUpdatedAt(repairingOrder.updatedAt());
-        repairingOrderEntity.setCustomer(customerDtoToEntity(repairingOrder.customer()));
+        repairingOrderEntity.setCustomerEntity(customerDtoToEntity(repairingOrder.customer()));
         repairingOrderEntity.setMotoEntity(motoCycleDtoToEntity(repairingOrder.motoCycle()));
         repairingOrderEntity.setUserEntity(userDtoToEntity(repairingOrder.mecanician()));
 

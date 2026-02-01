@@ -18,6 +18,7 @@ public class MotoService {
     }
 
     public MotoCycle addMoto(MotoCycle motoCycle) {
+
         return utilComponent.motoCycleEntityToDto(motoRepository.save(utilComponent.motoCycleDtoToEntity(motoCycle)));
     }
 
