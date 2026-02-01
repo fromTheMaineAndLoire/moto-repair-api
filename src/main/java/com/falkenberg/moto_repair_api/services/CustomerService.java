@@ -2,8 +2,13 @@ package com.falkenberg.moto_repair_api.services;
 
 import com.falkenberg.moto_repair_api.components.UtilComponent;
 import com.falkenberg.moto_repair_api.dtos.Customer;
+import com.falkenberg.moto_repair_api.entities.CustomerEntity;
 import com.falkenberg.moto_repair_api.repositories.CustomerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -22,9 +27,11 @@ public class CustomerService {
     }
 
     public Customer getCustomer(long id){
+        return  customerRepository.findById(id)
+                .map(utilComponent::customerEntityToDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return utilComponent.customerEntityToDto(customerRepository.getReferenceById(id));
-    }
+   }
 
 
 }

@@ -40,7 +40,7 @@ public class RepairingOrderEntity {
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id", unique = true)
-    private CustomerEntity customer;
+    private CustomerEntity customerEntity;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id", unique = true)

@@ -4,9 +4,11 @@ import com.falkenberg.moto_repair_api.components.UtilComponent;
 import com.falkenberg.moto_repair_api.dtos.RepairingOrder;
 import com.falkenberg.moto_repair_api.enums.Status;
 import com.falkenberg.moto_repair_api.repositories.RepairingOrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RepairingOrderService {
@@ -20,8 +22,12 @@ public class RepairingOrderService {
         this.utilComponent=utilComponent;
     }
 
-    public List<RepairingOrder> getRepairingOrderList(){
-        return repairingOrderRepository.findAll().stream().map(utilComponent::repairingOrderEntityToDto).toList();
+    public Page<RepairingOrder> getRepairingOrderList(int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        return repairingOrderRepository.findAll(pageable)
+                .map(utilComponent::repairingOrderEntityToDto);
+
     }
 
     public RepairingOrder getRepairingOrder(Long id){
