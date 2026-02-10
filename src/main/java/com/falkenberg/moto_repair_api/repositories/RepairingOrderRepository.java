@@ -1,6 +1,6 @@
 package com.falkenberg.moto_repair_api.repositories;
 
-import com.falkenberg.moto_repair_api.entities.RepairingOrderEntity;
+import com.falkenberg.moto_repair_api.entities.RepairingOrder;
 import com.falkenberg.moto_repair_api.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RepairingOrderRepository extends JpaRepository<RepairingOrderEntity,Long> {
+public interface RepairingOrderRepository extends JpaRepository<RepairingOrder,Long> {
 
     @Modifying
     @Query("""
-            update RepairingOrderEntity r
+            update RepairingOrder r
             set r.status=:status
             where r.id=:id
             """)

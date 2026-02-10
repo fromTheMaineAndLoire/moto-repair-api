@@ -1,106 +1,100 @@
 package com.falkenberg.moto_repair_api.components;
 
-import com.falkenberg.moto_repair_api.dtos.Customer;
-import com.falkenberg.moto_repair_api.dtos.MotoCycle;
-import com.falkenberg.moto_repair_api.dtos.RepairingOrder;
-import com.falkenberg.moto_repair_api.dtos.User;
-import com.falkenberg.moto_repair_api.entities.CustomerEntity;
-import com.falkenberg.moto_repair_api.entities.MotoEntity;
-import com.falkenberg.moto_repair_api.entities.RepairingOrderEntity;
-import com.falkenberg.moto_repair_api.entities.UserEntity;
-import com.falkenberg.moto_repair_api.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.falkenberg.moto_repair_api.dtos.CustomerDto;
+import com.falkenberg.moto_repair_api.dtos.MotoDto;
+import com.falkenberg.moto_repair_api.dtos.RepairingOrderDto;
+import com.falkenberg.moto_repair_api.dtos.UserDto;
+import com.falkenberg.moto_repair_api.entities.Customer;
+import com.falkenberg.moto_repair_api.entities.RepairingOrder;
+import com.falkenberg.moto_repair_api.entities.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UtilComponent {
 
-    public CustomerEntity customerDtoToEntity(Customer customer){
-        CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setEmail(customer.email());
-        customerEntity.setName(customer.name());
-        customerEntity.setPhone(customer.phone());
+    public Customer customerDtoToEntity(CustomerDto customerDto){
+        Customer customerEntity = new Customer();
+        customerEntity.setEmail(customerDto.email());
+        customerEntity.setName(customerDto.name());
+        customerEntity.setPhone(customerDto.phone());
 
         return customerEntity;
     }
 
-    public Customer customerEntityToDto(CustomerEntity customerEntity){
-        return new Customer(customerEntity.getId(),
-                customerEntity.getName(),
-                customerEntity.getPhone(),
-                customerEntity.getEmail());
+    public CustomerDto customerEntityToDto(Customer customer){
+        return new CustomerDto(customer.getId(),
+                customer.getName(),
+                customer.getPhone(),
+                customer.getEmail());
     }
 
-    public MotoCycle motoCycleEntityToDto(MotoEntity motoEntity) {
-        return new MotoCycle(motoEntity.getId(),
-                motoEntity.getMarque(),
-                motoEntity.getModele(),
-                motoEntity.getAnnee(),
-                motoEntity.getImmatriculation(),
-                customerEntityToDto(motoEntity.getClient()));
+    public MotoDto motoCycleEntityToDto(com.falkenberg.moto_repair_api.entities.Moto moto) {
+        return new MotoDto(moto.getId(),
+                moto.getMarque(),
+                moto.getModele(),
+                moto.getAnnee(),
+                moto.getImmatriculation(),
+                moto.getCustomer().getId());
     }
 
-    public MotoEntity motoCycleDtoToEntity(MotoCycle motoCycle){
-        MotoEntity motoEntity = new MotoEntity();
-        motoEntity.setMarque(motoCycle.marque());
-        motoEntity.setModele(motoCycle.model());
-        motoEntity.setAnnee(motoCycle.year());
-        motoEntity.setImmatriculation(motoCycle.immatriculation());
-        motoEntity.setClient(customerDtoToEntity(motoCycle.customer()));
+    public com.falkenberg.moto_repair_api.entities.Moto motoCycleDtoToEntity(MotoDto motoDtoCycle){
+        com.falkenberg.moto_repair_api.entities.Moto moto = new com.falkenberg.moto_repair_api.entities.Moto();
+        moto.setMarque(motoDtoCycle.marque());
+        moto.setModele(motoDtoCycle.model());
+        moto.setAnnee(motoDtoCycle.year());
+        moto.setImmatriculation(motoDtoCycle.immatriculation());
+        //motoDto.setClient(customerDtoToEntity(motoDto.id()));
 
-        return motoEntity;
+        return moto;
     }
 
-    public RepairingOrder repairingOrderEntityToDto(RepairingOrderEntity repairingOrderEntity){
-        return new RepairingOrder(
-                repairingOrderEntity.getId(),
-                repairingOrderEntity.getReference(),
-                repairingOrderEntity.getProblemDescription(),
-                repairingOrderEntity.getStatus(),
-                repairingOrderEntity.getPriority(),
-                repairingOrderEntity.getCreatedAt(),
-                repairingOrderEntity.getUpdatedAt(),
-                customerEntityToDto(repairingOrderEntity.getCustomerEntity()),
-                motoCycleEntityToDto(repairingOrderEntity.getMotoEntity()),
-                userToDto(repairingOrderEntity.getUserEntity())
+    public RepairingOrderDto repairingOrderEntityToDto(RepairingOrder repairingOrder){
+        return new RepairingOrderDto(
+                repairingOrder.getId(),
+                repairingOrder.getReference(),
+                repairingOrder.getProblemDescription(),
+                repairingOrder.getStatus(),
+                repairingOrder.getPriority(),
+                repairingOrder.getCreatedAt(),
+                repairingOrder.getUpdatedAt(),
+                customerEntityToDto(repairingOrder.getCustomer()),
+                motoCycleEntityToDto(repairingOrder.getMoto()),
+                userToDto(repairingOrder.getUser())
         );
     }
 
-    public RepairingOrderEntity repairingOrderToEntity(RepairingOrder repairingOrder){
-        RepairingOrderEntity repairingOrderEntity =  new RepairingOrderEntity();
+    public RepairingOrder repairingOrderToEntity(RepairingOrderDto repairingOrderDto){
+        RepairingOrder repairingOrderEntity =  new RepairingOrder();
 
-        repairingOrderEntity.setReference(repairingOrder.reference());
-        repairingOrderEntity.setStatus(repairingOrder.status());
-        repairingOrderEntity.setPriority(repairingOrder.priority());
-        repairingOrderEntity.setCreatedAt(repairingOrder.createdAt());
-        repairingOrderEntity.setUpdatedAt(repairingOrder.updatedAt());
-        repairingOrderEntity.setCustomerEntity(customerDtoToEntity(repairingOrder.customer()));
-        repairingOrderEntity.setMotoEntity(motoCycleDtoToEntity(repairingOrder.motoCycle()));
-        repairingOrderEntity.setUserEntity(userDtoToEntity(repairingOrder.mecanician()));
+        repairingOrderEntity.setReference(repairingOrderDto.reference());
+        repairingOrderEntity.setStatus(repairingOrderDto.status());
+        repairingOrderEntity.setPriority(repairingOrderDto.priority());
+        repairingOrderEntity.setCreatedAt(repairingOrderDto.createdAt());
+        repairingOrderEntity.setUpdatedAt(repairingOrderDto.updatedAt());
+        repairingOrderEntity.setCustomer(customerDtoToEntity(repairingOrderDto.customerDto()));
+        repairingOrderEntity.setMoto(motoCycleDtoToEntity(repairingOrderDto.motoDto()));
+        repairingOrderEntity.setUser(userDtoToEntity(repairingOrderDto.mecanician()));
 
         return repairingOrderEntity;
     }
 
 
-    public User userToDto(UserEntity userEntity){
-        return new User(
-                userEntity.getId(),
-                userEntity.getName(),
-                userEntity.getEmail(),
-                userEntity.getRole()
+    public UserDto userToDto(User user){
+        return new UserDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole()
         );
     }
 
 
-    public UserEntity userDtoToEntity(User user){
-        UserEntity userEntity = new UserEntity();
-        userEntity.setId(user.id());
-        userEntity.setName(user.nom());
-        userEntity.setEmail(user.email());
-        userEntity.setRole(user.role());
+    public User userDtoToEntity(UserDto userDto){
+        User userEntity = new User();
+        userEntity.setId(userDto.id());
+        userEntity.setName(userDto.nom());
+        userEntity.setEmail(userDto.email());
+        userEntity.setRole(userDto.role());
         return userEntity;
     }
 

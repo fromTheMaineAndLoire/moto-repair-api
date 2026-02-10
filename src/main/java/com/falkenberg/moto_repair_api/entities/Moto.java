@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "Moto")
 @Getter
 @Setter
-public class MotoEntity {
+public class Moto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +28,6 @@ public class MotoEntity {
     private String immatriculation;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", unique = true)
-    private CustomerEntity client;
+    @JoinColumn(name = "client_id", unique = true)
+    private Customer customer;
 }

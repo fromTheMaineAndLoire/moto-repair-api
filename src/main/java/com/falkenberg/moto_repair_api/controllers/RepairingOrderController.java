@@ -1,6 +1,6 @@
 package com.falkenberg.moto_repair_api.controllers;
 
-import com.falkenberg.moto_repair_api.dtos.RepairingOrder;
+import com.falkenberg.moto_repair_api.dtos.RepairingOrderDto;
 import com.falkenberg.moto_repair_api.enums.Status;
 import com.falkenberg.moto_repair_api.services.RepairingOrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,15 +30,15 @@ public class RepairingOrderController {
     // Get bon de réparation - ajouter pagination et filtre sur status, mécanicien, client et priorité
     @GetMapping(value = "/")
     @Operation(description = "Récupérer les ordres de réparation")
-    public ResponseEntity<Page<RepairingOrder>> getRepairingOrderList(@RequestParam(defaultValue = "0")  int page,
-                                                                      @RequestParam(defaultValue = "10") int size){
+    public ResponseEntity<Page<RepairingOrderDto>> getRepairingOrderList(@RequestParam(defaultValue = "0")  int page,
+                                                                         @RequestParam(defaultValue = "10") int size){
         return ResponseEntity.status(HttpStatus.FOUND).body(repairingOrderService.getRepairingOrderList(page,size));
     }
 
     // GET    /bons/{id}
     @GetMapping(value= "/{id}")
     @Operation(description = "Récupérer un ordre de réparation par son id")
-    public ResponseEntity<RepairingOrder> getRepairingOrder(@PathVariable Long id){
+    public ResponseEntity<RepairingOrderDto> getRepairingOrder(@PathVariable Long id){
         logger.info("Id {}",id);
         return ResponseEntity.status(HttpStatus.FOUND).body(repairingOrderService.getRepairingOrder(id));
     }
@@ -46,17 +46,17 @@ public class RepairingOrderController {
     // POST   /bons
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(description = "Créer un ordre de réparation")
-    public ResponseEntity<RepairingOrder> addRepairingOrder(@Valid RepairingOrder repairingOrder){
-        logger.info("Repairing order {}", repairingOrder);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repairingOrderService.addRepairingOrder(repairingOrder));
+    public ResponseEntity<RepairingOrderDto> addRepairingOrder(@Valid RepairingOrderDto repairingOrderDto){
+        logger.info("Repairing order {}", repairingOrderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(repairingOrderService.addRepairingOrder(repairingOrderDto));
     }
 
     // PUT    /bons/{id}
     @PutMapping(value = "{id}")
     @Operation(description = "Mettre à jour les information d'un ordre de réparation")
-    public ResponseEntity<RepairingOrder> updateRepairingOrder(@PathVariable Long id, @Valid @RequestBody RepairingOrder repairingOrder){
+    public ResponseEntity<RepairingOrderDto> updateRepairingOrder(@PathVariable Long id, @Valid @RequestBody RepairingOrderDto repairingOrderDto){
         logger.info("Id {}",id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repairingOrderService.putRepairingOrder(id,repairingOrder));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(repairingOrderService.putRepairingOrder(id, repairingOrderDto));
     }
 
     // PATCH  /bons/{id}/statut
