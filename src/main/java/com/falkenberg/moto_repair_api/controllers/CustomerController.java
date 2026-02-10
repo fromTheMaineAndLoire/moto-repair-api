@@ -5,10 +5,8 @@ import com.falkenberg.moto_repair_api.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,32 +14,23 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Client",description = "Gestion des clients")
 public class CustomerController {
 
-    Logger logger = LoggerFactory.getLogger(CustomerController.class);
-
     private final CustomerService customerService;
 
     public CustomerController(CustomerService customerService){
         this.customerService=customerService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "Créer un client")
-    public ResponseEntity<CustomerDto> addCustomer(@Valid @RequestBody CustomerDto customerDto){
-        CustomerDto customerDto1 = customerService.addCustomer(customerDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerDto1);
+    public CustomerDto addCustomer(@Valid @RequestBody CustomerDto customerDto){
+        return customerService.addCustomer(customerDto);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(description = "Récupérer les informations d'un client")
-    public ResponseEntity<CustomerDto> getCustomer(@PathVariable(name = "id") Long id){
-        logger.info("[ID] = {}",id);
-        CustomerDto customerDto = customerService.getCustomer(id);
-        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
+    public CustomerDto getCustomer(@PathVariable(name = "id") Long id){
+        return customerService.getCustomer(id);
     }
 
-    /*@GetMapping
-    @Operation(description = "Récupérer une liste de clients")
-    public ResponseEntity<List<CustomerDto>> getAllCustomers(){
-        CustomerDto customerDto = customerService.get
-    }*/
 }

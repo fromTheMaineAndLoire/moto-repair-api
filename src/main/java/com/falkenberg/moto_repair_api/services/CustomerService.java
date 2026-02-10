@@ -2,6 +2,8 @@ package com.falkenberg.moto_repair_api.services;
 
 import com.falkenberg.moto_repair_api.components.UtilComponent;
 import com.falkenberg.moto_repair_api.dtos.CustomerDto;
+import com.falkenberg.moto_repair_api.entities.Customer;
+import com.falkenberg.moto_repair_api.exceptions.ResourceNotFoundException;
 import com.falkenberg.moto_repair_api.repositories.CustomerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,21 @@ public class CustomerService {
     }
 
     public CustomerDto addCustomer(CustomerDto customerDto){
-        return utilComponent.customerEntityToDto(customerRepository.save(utilComponent.customerDtoToEntity(customerDto)));
+        Customer customer = utilComponent.customerDtoToEntity(customerDto);
+
+        if(customerRepository.existsById(customer.getId())){
+            throw new ResourceNotFoundException("Customer with id " + customer.getId() + " already exists");
+        }
+
+        Customer savedCustomer = customerRepository.save(customer);
+
+        return utilComponent.customerEntityToDto(savedCustomer);
     }
 
     public CustomerDto getCustomer(long id){
         return  customerRepository.findById(id)
                 .map(utilComponent::customerEntityToDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + id + " not found"));
 
    }
 

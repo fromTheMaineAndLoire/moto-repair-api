@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +23,16 @@ public class MotoController {
     }
 
     @Operation(description = "Créer les informations d'une nouvelle motoDto")
-    @PostMapping
-    public ResponseEntity<MotoDto> addMoto(@Valid @RequestBody MotoDto motoDto){
-        MotoDto motoDto1 =motoService.addMoto(motoDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(motoDto1);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public MotoDto addMoto(@Valid @RequestBody MotoDto motoDto){
+        return motoService.addMoto(motoDto);
     }
 
     @Operation(description = "Récupérer la liste des motos")
-    @GetMapping
-    public ResponseEntity<List<MotoDto>> getAllMotos(){
-        return ResponseEntity.status(HttpStatus.OK).body(motoService.getAllMotos());
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MotoDto> getAllMotos(){
+        return motoService.getAllMotos();
     }
 
 }
