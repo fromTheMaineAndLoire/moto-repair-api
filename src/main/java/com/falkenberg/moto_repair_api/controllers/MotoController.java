@@ -1,16 +1,15 @@
 package com.falkenberg.moto_repair_api.controllers;
 
-import com.falkenberg.moto_repair_api.dtos.MotoCycle;
+import com.falkenberg.moto_repair_api.dtos.MotoDto;
 import com.falkenberg.moto_repair_api.services.MotoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/motos")
@@ -23,11 +22,17 @@ public class MotoController {
         this.motoService = motoService;
     }
 
-    @Operation(description = "Créer les informations d'une nouvelle moto")
+    @Operation(description = "Créer les informations d'une nouvelle motoDto")
     @PostMapping
-    public ResponseEntity<MotoCycle> addMoto(@Valid @RequestBody MotoCycle motoCycle){
-        MotoCycle motoCycle1=motoService.addMoto(motoCycle);
-        return ResponseEntity.status(HttpStatus.CREATED).body(motoCycle1);
+    public ResponseEntity<MotoDto> addMoto(@Valid @RequestBody MotoDto motoDto){
+        MotoDto motoDto1 =motoService.addMoto(motoDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(motoDto1);
+    }
+
+    @Operation(description = "Récupérer la liste des motos")
+    @GetMapping
+    public ResponseEntity<List<MotoDto>> getAllMotos(){
+        return ResponseEntity.status(HttpStatus.OK).body(motoService.getAllMotos());
     }
 
 }

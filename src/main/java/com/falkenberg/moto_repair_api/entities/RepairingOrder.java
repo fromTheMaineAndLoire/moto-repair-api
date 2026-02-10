@@ -1,6 +1,5 @@
 package com.falkenberg.moto_repair_api.entities;
 
-import com.falkenberg.moto_repair_api.dtos.User;
 import com.falkenberg.moto_repair_api.enums.Priority;
 import com.falkenberg.moto_repair_api.enums.Status;
 import jakarta.persistence.*;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "bon_reparation")
 @Getter
 @Setter
-public class RepairingOrderEntity {
+public class RepairingOrder {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -39,14 +38,14 @@ public class RepairingOrderEntity {
     private LocalDateTime updatedAt;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", unique = true)
-    private CustomerEntity customerEntity;
+    @JoinColumn(name = "customer_id", unique = true)
+    private Customer customer;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", unique = true)
-    private MotoEntity motoEntity;
+    @JoinColumn(name = "moto_id", unique = true)
+    private Moto moto;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", unique = true)
-    private UserEntity userEntity;
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 }

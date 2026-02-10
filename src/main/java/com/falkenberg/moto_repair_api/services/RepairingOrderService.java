@@ -1,7 +1,7 @@
 package com.falkenberg.moto_repair_api.services;
 
 import com.falkenberg.moto_repair_api.components.UtilComponent;
-import com.falkenberg.moto_repair_api.dtos.RepairingOrder;
+import com.falkenberg.moto_repair_api.dtos.RepairingOrderDto;
 import com.falkenberg.moto_repair_api.enums.Status;
 import com.falkenberg.moto_repair_api.repositories.RepairingOrderRepository;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,7 @@ public class RepairingOrderService {
         this.utilComponent=utilComponent;
     }
 
-    public Page<RepairingOrder> getRepairingOrderList(int page, int size){
+    public Page<RepairingOrderDto> getRepairingOrderList(int page, int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         return repairingOrderRepository.findAll(pageable)
@@ -30,16 +30,16 @@ public class RepairingOrderService {
 
     }
 
-    public RepairingOrder getRepairingOrder(Long id){
+    public RepairingOrderDto getRepairingOrder(Long id){
         return utilComponent.repairingOrderEntityToDto(repairingOrderRepository.getReferenceById(id));
     }
 
-    public RepairingOrder addRepairingOrder(RepairingOrder repairingOrder){
-        return utilComponent.repairingOrderEntityToDto(repairingOrderRepository.save(utilComponent.repairingOrderToEntity(repairingOrder)));
+    public RepairingOrderDto addRepairingOrder(RepairingOrderDto repairingOrderDto){
+        return utilComponent.repairingOrderEntityToDto(repairingOrderRepository.save(utilComponent.repairingOrderToEntity(repairingOrderDto)));
     }
 
-    public RepairingOrder putRepairingOrder(Long id, RepairingOrder repairingOrder){
-        return utilComponent.repairingOrderEntityToDto(repairingOrderRepository.save(utilComponent.repairingOrderToEntity(repairingOrder)));
+    public RepairingOrderDto putRepairingOrder(Long id, RepairingOrderDto repairingOrderDto){
+        return utilComponent.repairingOrderEntityToDto(repairingOrderRepository.save(utilComponent.repairingOrderToEntity(repairingOrderDto)));
     }
 
     public int patchRepairingOrder(Long id, Status status){
