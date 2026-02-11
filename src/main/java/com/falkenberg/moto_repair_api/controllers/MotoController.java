@@ -23,7 +23,8 @@ public class MotoController {
     }
 
     @Operation(description = "Créer les informations d'une nouvelle motoDto")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MotoDto addMoto(@Valid @RequestBody MotoDto motoDto){
         return motoService.addMoto(motoDto);
